@@ -12,5 +12,5 @@ public interface CustomerService {
    String registerCustomer(CustomerRequestDto customerRequestDto);
 
 
-  String updateCustomer(CustomerService customerService);
+  String updateCustomer(CustomerRequestDto customerRequestDto);
 }

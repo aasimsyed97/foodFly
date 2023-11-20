@@ -1,6 +1,7 @@
 package com.foodFly.master.Service;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
+
+import com.foodFly.master.DAO.AddressDao;
 import com.foodFly.master.DAO.CustomerDao;
 import com.foodFly.master.DTOs.CustomerRequestDto;
 import com.foodFly.master.DTOs.CustomerResponseDto;
@@ -14,6 +15,9 @@ public class CustomerServiceImpl implements CustomerService{
 
     @Autowired
     CustomerDao customerDao;
+
+    @Autowired
+    AddressDao addressDao;
 
     @Override
     public CustomerResponseDto getCustomer(Long id) {
@@ -33,15 +37,7 @@ public class CustomerServiceImpl implements CustomerService{
 
     @Override
     public String registerCustomer(CustomerRequestDto customerRequestDto) {
-        Customer customer = new Customer();
-        customer.setFirstName(customerRequestDto.getFirstName());
-        customer.setLastName(customerRequestDto.getLastName());
-        customer.setMobileNumber(customerRequestDto.getMobileNumber());
-        customer.setGender(customerRequestDto.getGender());
-        customer.setAge(customerRequestDto.getAge());
-        customer.setUserName(customerRequestDto.getUserName());
-        customer.setPassword(customerRequestDto.getPassword());
-        customer.setCustomerEmail(customerRequestDto.getCustomerEmail());
+        Customer customer = getCustomer(customerRequestDto);
 
         customerDao.save(customer);
 
@@ -53,12 +49,28 @@ public class CustomerServiceImpl implements CustomerService{
         address.setPinCode(customerRequestDto.getPinCode());
         address.setStreet(customerRequestDto.getStreet());
 
+         addressDao.save(address);
 
         return null;
     }
 
+    private static Customer getCustomer(CustomerRequestDto customerRequestDto) {
+        Customer customer = new Customer();
+        customer.setFirstName(customerRequestDto.getFirstName());
+        customer.setLastName(customerRequestDto.getLastName());
+        customer.setMobileNumber(customerRequestDto.getMobileNumber());
+        customer.setGender(customerRequestDto.getGender());
+        customer.setAge(customerRequestDto.getAge());
+        customer.setUserName(customerRequestDto.getUserName());
+        customer.setPassword(customerRequestDto.getPassword());
+        customer.setCustomerEmail(customerRequestDto.getCustomerEmail());
+        return customer;
+    }
+
     @Override
-    public String updateCustomer(CustomerService customerService) {
+    public String updateCustomer(CustomerRequestDto customerRequestDto) { 
+        
+        
         return null;
     }
 }
