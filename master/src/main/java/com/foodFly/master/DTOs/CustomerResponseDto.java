@@ -1,23 +1,13 @@
-package com.foodFly.master.Model;
+package com.foodFly.master.DTOs;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import java.util.List;
-
-@Entity
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class Customer {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+public class CustomerResponseDto {
     private Long customerId;
 
     private int age;
@@ -28,7 +18,6 @@ public class Customer {
 
     private String lastName;
 
-    private String password;
     private String userName;
 
     private String gender;
@@ -36,5 +25,13 @@ public class Customer {
     private String mobileNumber;
 
 
+
+    private String building;
+    private String city;
+    private String country;
+
+    private String  pinCode;
+    private String state;
+    private String street;
 
 }

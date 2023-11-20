@@ -1,7 +1,5 @@
 package com.foodFly.master.Model;
 
-import com.foodFly.master.Enum.Category;
-
 import java.util.List;
 
 public class Restaurant {
@@ -15,7 +13,7 @@ public class Restaurant {
    private String password;
    private String restaurantName;
 
-   private List<Addresses> addressesList;
+   private List<Address> addressesList;
 
    private Enum Category;
 

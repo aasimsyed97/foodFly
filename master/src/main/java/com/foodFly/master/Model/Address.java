@@ -9,7 +9,7 @@ import javax.persistence.Id;
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
-public class Addresses {
+public class Address {
 
     @Id
     private Long addressId;
@@ -18,7 +18,7 @@ public class Addresses {
     private String city;
     private String country;
 
-    private String  pincode;
+    private String  pinCode;
     private String state;
     private String street;
 
