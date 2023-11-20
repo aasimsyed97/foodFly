@@ -19,6 +19,8 @@ public class CustomerServiceImpl implements CustomerService{
     @Autowired
     AddressDao addressDao;
 
+
+
     @Override
     public CustomerResponseDto getCustomer(Long id) {
         Customer customer = customerDao.getReferenceById(id);
@@ -41,7 +43,22 @@ public class CustomerServiceImpl implements CustomerService{
 
         customerDao.save(customer);
 
-        Address address = new Address();
+        Address address = getAddress(customerRequestDto);
+
+         addressDao.save(address);
+
+        return null;
+    }
+
+    @Override
+    public String updateCustomer(CustomerRequestDto customerRequestDto) {
+
+
+        return null;
+    }
+
+    private static Address getAddress(CustomerRequestDto customerRequestDto){
+        Address address  = new Address();
         address.setCity(customerRequestDto.getCity());
         address.setState(customerRequestDto.getState());
         address.setCountry(customerRequestDto.getCountry());
@@ -49,9 +66,8 @@ public class CustomerServiceImpl implements CustomerService{
         address.setPinCode(customerRequestDto.getPinCode());
         address.setStreet(customerRequestDto.getStreet());
 
-         addressDao.save(address);
+        return  address;
 
-        return null;
     }
 
     private static Customer getCustomer(CustomerRequestDto customerRequestDto) {
@@ -67,10 +83,4 @@ public class CustomerServiceImpl implements CustomerService{
         return customer;
     }
 
-    @Override
-    public String updateCustomer(CustomerRequestDto customerRequestDto) { 
-        
-        
-        return null;
-    }
 }
