@@ -1,5 +1,6 @@
 package com.foodFly.master.Controller;
 
+import com.foodFly.master.DTOs.AddressRequestDto;
 import com.foodFly.master.DTOs.CustomerRequestDto;
 import com.foodFly.master.DTOs.CustomerResponseDto;
 import com.foodFly.master.Service.CustomerService;
@@ -21,23 +22,32 @@ public class CustomerController {
     @Autowired
     CustomerService customerService;
     @GetMapping("/getCustomer/")
-    ResponseEntity<CustomerResponseDto> getCustomerById(@RequestParam(value = "id",required = true) Long id ){
+    ResponseEntity<CustomerResponseDto> getCustomerByIdController(@RequestParam(value = "id",required = true) Long id ){
 
         CustomerResponseDto customerResponseDto =  customerService.getCustomer(id);
           return  new ResponseEntity<>(customerResponseDto, HttpStatus.OK);
 
       }
 
-    @PostMapping("/save")
-    ResponseEntity<String> registerCustomer(@RequestBody CustomerRequestDto customerRequestDto){
+    @PostMapping("/register")
+    ResponseEntity<String> registerCustomerController(@RequestBody CustomerRequestDto customerRequestDto){
         String userName = customerService.registerCustomer(customerRequestDto);
         return new ResponseEntity<>(userName,HttpStatus.CREATED);
     }
 
     @PutMapping("/update")
-    ResponseEntity<String> updateCustomer(@RequestBody CustomerRequestDto customerRequestDto){
+    ResponseEntity<String> updateCustomerController(@RequestBody CustomerRequestDto customerRequestDto){
         String userName =  customerService.updateCustomer(customerRequestDto);
         return  new ResponseEntity<>(userName,HttpStatus.OK);
     }
+
+    @PostMapping("updateAddress")
+    ResponseEntity<String> updateCustomerAddressController(@RequestParam Long customerId,
+            @RequestBody AddressRequestDto addressRequestDto){
+       String  res = customerService.updateCustomerAddressController(addressRequestDto,customerId);
+
+       return null;
+    }
+
 
 }
