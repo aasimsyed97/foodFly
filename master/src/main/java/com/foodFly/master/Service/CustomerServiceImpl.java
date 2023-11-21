@@ -16,7 +16,7 @@ import org.springframework.stereotype.Service;
 import java.util.Objects;
 
 @Service
-public class CustomerServiceImpl implements CustomerService{
+public class CustomerServiceImpl implements CustomerService {
 
     @Autowired
     CustomerDao customerDao;
@@ -24,21 +24,21 @@ public class CustomerServiceImpl implements CustomerService{
     @Autowired
     AddressDao addressDao;
 
-   @Autowired
+    @Autowired
     CustomerAddressMappingDao customerAddressMappingDao;
 
     @Override
     public CustomerResponseDto getCustomer(Long id) {
         Customer customer = customerDao.getReferenceById(id);
-        CustomerResponseDto  customerResponseDto = new CustomerResponseDto();
+        CustomerResponseDto customerResponseDto = new CustomerResponseDto();
         customerResponseDto.setCustomerEmail(customer.getCustomerEmail());
         customerResponseDto.setAge(customerResponseDto.getAge());
         customerResponseDto.setGender(customer.getGender());
-         customerResponseDto.setCustomerId(customer.getCustomerId());
-         customerResponseDto.setLastName(customer.getLastName());
-         customerResponseDto.setMobileNumber(customer.getMobileNumber());
-         customerResponseDto.setFirstName(customer.getFirstName());
-         customerResponseDto.setUserName(customer.getUserName());
+        customerResponseDto.setCustomerId(customer.getCustomerId());
+        customerResponseDto.setLastName(customer.getLastName());
+        customerResponseDto.setMobileNumber(customer.getMobileNumber());
+        customerResponseDto.setFirstName(customer.getFirstName());
+        customerResponseDto.setUserName(customer.getUserName());
 
         return null;
     }
@@ -47,40 +47,46 @@ public class CustomerServiceImpl implements CustomerService{
     public String registerCustomer(CustomerRequestDto customerRequestDto) {
         Customer customer = getCustomer(customerRequestDto);
 
-       customer = customerDao.save(customer);
+        customer = customerDao.save(customer);
 
         Address address = getAddress(customerRequestDto);
 
-        address =  addressDao.save(address);
+        address = addressDao.save(address);
 
-       CustomerAddressMapping customerAddressMapping = new CustomerAddressMapping();
+        CustomerAddressMapping customerAddressMapping = new CustomerAddressMapping();
         customerAddressMapping.setCustomerId(customer.getCustomerId());
         customerAddressMapping.setAddressId(address.getAddressId());
-       customerAddressMapping = customerAddressMappingDao.save(customerAddressMapping);
+        customerAddressMapping = customerAddressMappingDao.save(customerAddressMapping);
 
-        if(!Objects.isNull(customerAddressMapping.getUuid())){
+        if (!Objects.isNull(customerAddressMapping.getUuid())) {
             return "Customer saved succefully";
         }
         return "something went wrong";
     }
 
     @Override
-    public String updateCustomer(CustomerRequestDto customerRequestDto) {
+    public String updateCustomer(CustomerRequestDto customerRequestDto, Long customerId) {
+           Customer customer = customerDao.getReferenceById(customerId);
+
+            Customer customerReq = getCustomer(customerRequestDto);
+            customerReq.setCustomerId(customer.getCustomerId());
+            customerReq = customerDao.save(customerReq);
 
 
-        return null;
+
+        return "Customer updated successfully";
     }
 
     @Override
     public String updateCustomerAddressController(AddressRequestDto addressRequestDto, Long customerId) {
         Address address = getAddress(addressRequestDto);
-         address = addressDao.save(address);
+        address = addressDao.save(address);
 
         return null;
     }
 
-    private static Address getAddress(CustomerRequestDto customerRequestDto){
-        Address address  = new Address();
+    private static Address getAddress(CustomerRequestDto customerRequestDto) {
+        Address address = new Address();
         address.setCity(customerRequestDto.getCity());
         address.setState(customerRequestDto.getState());
         address.setCountry(customerRequestDto.getCountry());
@@ -88,11 +94,12 @@ public class CustomerServiceImpl implements CustomerService{
         address.setPinCode(customerRequestDto.getPinCode());
         address.setStreet(customerRequestDto.getStreet());
 
-        return  address;
+        return address;
 
     }
-    private static Address getAddress(AddressRequestDto addressRequestDto){
-        Address address  = new Address();
+
+    private static Address getAddress(AddressRequestDto addressRequestDto) {
+        Address address = new Address();
         address.setCity(addressRequestDto.getCity());
         address.setState(addressRequestDto.getState());
         address.setCountry(addressRequestDto.getCountry());
@@ -100,7 +107,7 @@ public class CustomerServiceImpl implements CustomerService{
         address.setPinCode(addressRequestDto.getPinCode());
         address.setStreet(addressRequestDto.getStreet());
 
-        return  address;
+        return address;
 
     }
 

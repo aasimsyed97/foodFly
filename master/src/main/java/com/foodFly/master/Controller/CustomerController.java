@@ -36,8 +36,8 @@ public class CustomerController {
     }
 
     @PutMapping("/update")
-    ResponseEntity<String> updateCustomerController(@RequestBody CustomerRequestDto customerRequestDto){
-        String userName =  customerService.updateCustomer(customerRequestDto);
+    ResponseEntity<String> updateCustomerController(@RequestBody CustomerRequestDto customerRequestDto, @RequestParam Long customerId){
+        String userName =  customerService.updateCustomer(customerRequestDto,customerId);
         return  new ResponseEntity<>(userName,HttpStatus.OK);
     }
 

@@ -13,7 +13,7 @@ public interface CustomerService {
    String registerCustomer(CustomerRequestDto customerRequestDto);
 
 
-  String updateCustomer(CustomerRequestDto customerRequestDto);
+  String updateCustomer(CustomerRequestDto customerRequestDto, Long customerId);
 
    String updateCustomerAddressController(AddressRequestDto addressRequestDto,Long customerId);
 }
