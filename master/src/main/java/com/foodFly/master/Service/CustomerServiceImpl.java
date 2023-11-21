@@ -3,6 +3,7 @@ package com.foodFly.master.Service;
 
 import com.foodFly.master.DAO.AddressDao;
 import com.foodFly.master.DAO.CustomerDao;
+import com.foodFly.master.DTOs.AddressRequestDto;
 import com.foodFly.master.DTOs.CustomerRequestDto;
 import com.foodFly.master.DTOs.CustomerResponseDto;
 import com.foodFly.master.Model.Address;
@@ -41,11 +42,13 @@ public class CustomerServiceImpl implements CustomerService{
     public String registerCustomer(CustomerRequestDto customerRequestDto) {
         Customer customer = getCustomer(customerRequestDto);
 
-        customerDao.save(customer);
+       customer = customerDao.save(customer);
 
         Address address = getAddress(customerRequestDto);
 
-         addressDao.save(address);
+        address =  addressDao.save(address);
+
+
 
         return null;
     }
@@ -53,6 +56,14 @@ public class CustomerServiceImpl implements CustomerService{
     @Override
     public String updateCustomer(CustomerRequestDto customerRequestDto) {
 
+
+        return null;
+    }
+
+    @Override
+    public String updateCustomerAddressController(AddressRequestDto addressRequestDto, Long customerId) {
+        Address address = getAddress(addressRequestDto);
+         address = addressDao.save(address);
 
         return null;
     }
@@ -65,6 +76,18 @@ public class CustomerServiceImpl implements CustomerService{
         address.setBuilding(customerRequestDto.getBuilding());
         address.setPinCode(customerRequestDto.getPinCode());
         address.setStreet(customerRequestDto.getStreet());
+
+        return  address;
+
+    }
+    private static Address getAddress(AddressRequestDto addressRequestDto){
+        Address address  = new Address();
+        address.setCity(addressRequestDto.getCity());
+        address.setState(addressRequestDto.getState());
+        address.setCountry(addressRequestDto.getCountry());
+        address.setBuilding(addressRequestDto.getBuilding());
+        address.setPinCode(addressRequestDto.getPinCode());
+        address.setStreet(addressRequestDto.getStreet());
 
         return  address;
 
