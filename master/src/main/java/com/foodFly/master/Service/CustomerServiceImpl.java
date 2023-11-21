@@ -2,14 +2,18 @@ package com.foodFly.master.Service;
 
 
 import com.foodFly.master.DAO.AddressDao;
+import com.foodFly.master.DAO.CustomerAddressMappingDao;
 import com.foodFly.master.DAO.CustomerDao;
 import com.foodFly.master.DTOs.AddressRequestDto;
 import com.foodFly.master.DTOs.CustomerRequestDto;
 import com.foodFly.master.DTOs.CustomerResponseDto;
 import com.foodFly.master.Model.Address;
 import com.foodFly.master.Model.Customer;
+import com.foodFly.master.Model.CustomerAddressMapping;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.Objects;
 
 @Service
 public class CustomerServiceImpl implements CustomerService{
@@ -20,7 +24,8 @@ public class CustomerServiceImpl implements CustomerService{
     @Autowired
     AddressDao addressDao;
 
-
+   @Autowired
+    CustomerAddressMappingDao customerAddressMappingDao;
 
     @Override
     public CustomerResponseDto getCustomer(Long id) {
@@ -48,9 +53,15 @@ public class CustomerServiceImpl implements CustomerService{
 
         address =  addressDao.save(address);
 
+       CustomerAddressMapping customerAddressMapping = new CustomerAddressMapping();
+        customerAddressMapping.setCustomerId(customer.getCustomerId());
+        customerAddressMapping.setAddressId(address.getAddressId());
+       customerAddressMapping = customerAddressMappingDao.save(customerAddressMapping);
 
-
-        return null;
+        if(!Objects.isNull(customerAddressMapping.getUuid())){
+            return "Customer saved succefully";
+        }
+        return "something went wrong";
     }
 
     @Override
