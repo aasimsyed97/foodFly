@@ -72,8 +72,6 @@ public class CustomerServiceImpl implements CustomerService {
             customerReq.setCustomerId(customer.getCustomerId());
             customerReq = customerDao.save(customerReq);
 
-
-
         return "Customer updated successfully";
     }
 
@@ -83,6 +81,13 @@ public class CustomerServiceImpl implements CustomerService {
         address = addressDao.save(address);
 
         return null;
+    }
+
+    @Override
+    public String deleteCustomerAddress(Long customerId,Long addressId){
+        addressDao.deleteById(addressId);
+        customerAddressMappingDao.deleteByCustomerIdAndAddressId(customerId,addressId);
+        return "CustomerAddress deleted successfully";
     }
 
     private static Address getAddress(CustomerRequestDto customerRequestDto) {
