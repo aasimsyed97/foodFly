@@ -56,4 +56,10 @@ public class CustomerController {
         return new ResponseEntity<>(res,HttpStatus.OK);
     }
 
+    @DeleteMapping("/deleteCustomer")
+    ResponseEntity<String> deleteCustomerController(@RequestParam Long customerId){
+         String res = customerService.deleteCustomer(customerId);
+         return new ResponseEntity<>(res,HttpStatus.OK);
+    }
+
 }
