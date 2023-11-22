@@ -46,8 +46,14 @@ public class CustomerController {
             @RequestBody AddressRequestDto addressRequestDto){
        String  res = customerService.updateCustomerAddressController(addressRequestDto,customerId);
 
-       return null;
+       return new ResponseEntity<>(res,HttpStatus.OK);
     }
 
+    @DeleteMapping("/deleteAddress")
+    ResponseEntity<String> deleteCustomerAddressController(@RequestParam Long customerId,@RequestParam Long addressId){
+         String res = customerService.deleteCustomerAddress(customerId,addressId);
+
+        return new ResponseEntity<>(res,HttpStatus.OK);
+    }
 
 }
