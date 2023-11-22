@@ -9,5 +9,5 @@ import java.util.UUID;
 @Repository
 public interface CustomerAddressMappingDao extends JpaRepository<CustomerAddressMapping, UUID> {
 
-
+   void deleteByCustomerIdAndAddressId(Long customerId,Long addressId);
 }
