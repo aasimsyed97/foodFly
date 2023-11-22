@@ -17,4 +17,5 @@ public interface CustomerService {
 
    String updateCustomerAddressController(AddressRequestDto addressRequestDto,Long customerId);
    String deleteCustomerAddress(Long customerId,Long addressId);
+   String deleteCustomer(Long customerId);
 }
