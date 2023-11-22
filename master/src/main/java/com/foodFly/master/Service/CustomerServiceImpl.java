@@ -13,7 +13,7 @@ import com.foodFly.master.Model.CustomerAddressMapping;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Objects;
+import java.util.*;
 
 @Service
 public class CustomerServiceImpl implements CustomerService {
@@ -80,7 +80,7 @@ public class CustomerServiceImpl implements CustomerService {
         Address address = getAddress(addressRequestDto);
         address = addressDao.save(address);
 
-        return null;
+        return "address updated with id "+address.getAddressId();
     }
 
     @Override
@@ -89,6 +89,21 @@ public class CustomerServiceImpl implements CustomerService {
         customerAddressMappingDao.deleteByCustomerIdAndAddressId(customerId,addressId);
         return "CustomerAddress deleted successfully";
     }
+
+    @Override
+    public String deleteCustomer(Long customerId) {
+        customerDao.deleteById(customerId);
+        List<CustomerAddressMapping>  customerAddressMappings = customerAddressMappingDao.findAllByCustomerId(customerId);
+         List<Long> addressIds = new ArrayList<>();
+        customerAddressMappings.forEach((model)->{
+                addressIds.add(model.getAddressId());
+                customerAddressMappingDao.deleteByCustomerIdAndAddressId(customerId,model.getAddressId());
+        });
+         addressIds.forEach(i->addressDao.deleteById(i));
+
+        return "customer deleted successfully";
+    }
+
 
     private static Address getAddress(CustomerRequestDto customerRequestDto) {
         Address address = new Address();
