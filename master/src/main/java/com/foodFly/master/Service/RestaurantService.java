@@ -2,14 +2,15 @@ package com.foodFly.master.Service;
 
 import com.foodFly.master.DTOs.RestaurantRequestDto;
 import com.foodFly.master.DTOs.RestaurantResponseDto;
+import com.foodFly.master.Model.Restaurant;
 
 public interface RestaurantService {
 
-    public RestaurantResponseDto registerRestaurant(RestaurantRequestDto restaurantRequestDto);
+    public Restaurant registerRestaurant(RestaurantRequestDto restaurantRequestDto);
 
-    public RestaurantResponseDto getRestaurant(Long restaurantId);
+    public Restaurant getRestaurant(Long restaurantId);
 
-    public RestaurantResponseDto updateRestaurant(RestaurantRequestDto restaurantRequestDto);
+    public Restaurant updateRestaurant(RestaurantRequestDto restaurantRequestDto);
 
     public String deleteRestaurant(Long restaurantId);
 

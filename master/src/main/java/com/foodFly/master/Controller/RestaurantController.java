@@ -2,6 +2,7 @@ package com.foodFly.master.Controller;
 
 import com.foodFly.master.DTOs.RestaurantRequestDto;
 import com.foodFly.master.DTOs.RestaurantResponseDto;
+import com.foodFly.master.Model.Restaurant;
 import com.foodFly.master.Service.RestaurantService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -15,25 +16,25 @@ public class RestaurantController {
     RestaurantService restaurantService;
 
     @PostMapping("/registerRestaurant")
-    public ResponseEntity<RestaurantResponseDto> registerRestaurantController(@RequestBody RestaurantRequestDto restaurantRequestDto){
+    public ResponseEntity<Restaurant> registerRestaurantController(@RequestBody RestaurantRequestDto restaurantRequestDto){
 
-        RestaurantResponseDto restaurantResponseDto = restaurantService.registerRestaurant(restaurantRequestDto);
-        return  new ResponseEntity<>(restaurantResponseDto, HttpStatus.CREATED);
+        Restaurant restaurant  = restaurantService.registerRestaurant(restaurantRequestDto);
+        return  new ResponseEntity<>(restaurant, HttpStatus.CREATED);
     }
 
    @GetMapping("/getRestaurant")
-    public ResponseEntity<RestaurantResponseDto> getRestaurantController(@RequestParam Long restaurantId){
+    public ResponseEntity<Restaurant> getRestaurantController(@RequestParam Long restaurantId){
 
-        RestaurantResponseDto responseDto = restaurantService.getRestaurant(restaurantId);
+       Restaurant response = restaurantService.getRestaurant(restaurantId);
 
-        return new ResponseEntity<>(responseDto,HttpStatus.OK);
+        return new ResponseEntity<>(response,HttpStatus.OK);
     }
 
     @PutMapping("/updateRestaurant")
-    public ResponseEntity<RestaurantResponseDto> updateRestaurant(@RequestBody RestaurantRequestDto restaurantRequestDto){
+    public ResponseEntity<Restaurant> updateRestaurant(@RequestBody RestaurantRequestDto restaurantRequestDto){
 
-        RestaurantResponseDto responseDto = restaurantService.updateRestaurant(restaurantRequestDto);
-        return new ResponseEntity<>(responseDto,HttpStatus.OK);
+        Restaurant response = restaurantService.updateRestaurant(restaurantRequestDto);
+        return new ResponseEntity<>(response,HttpStatus.OK);
     }
 
 

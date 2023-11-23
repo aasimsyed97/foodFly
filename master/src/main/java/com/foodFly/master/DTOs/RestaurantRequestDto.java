@@ -20,7 +20,5 @@ public class RestaurantRequestDto {
     private String password;
     private String restaurantName;
 
-    private List<Address> addressesList;
-
-    private Enum Category;
+    private String category;
 }
