@@ -3,7 +3,7 @@ package com.foodFly.master.Controller;
 import com.foodFly.master.DTOs.AddressRequestDto;
 import com.foodFly.master.DTOs.CustomerRequestDto;
 import com.foodFly.master.DTOs.CustomerResponseDto;
-import com.foodFly.master.Service.CustomerService;
+import com.foodFly.master.Service.CustomerServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,7 +20,7 @@ public class CustomerController {
 
      */
     @Autowired
-    CustomerService customerService;
+    CustomerServiceImpl customerService;
     @GetMapping("/getCustomer/")
     ResponseEntity<CustomerResponseDto> getCustomerByIdController(@RequestParam(value = "id",required = true) Long id ){
 

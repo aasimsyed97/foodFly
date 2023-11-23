@@ -1,21 +1,17 @@
-package com.foodFly.master.Model;
+package com.foodFly.master.DTOs;
 
+import com.foodFly.master.Model.Address;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
 import java.util.List;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Entity
-public class Restaurant {
+public class RestaurantRequestDto {
 
-    @Id
-    private Long restaurantId;
 
     private String mobileNumber;
     private String email;
@@ -23,8 +19,8 @@ public class Restaurant {
 
     private String password;
     private String restaurantName;
-    private String Category;
 
+    private List<Address> addressesList;
 
-
+    private Enum Category;
 }
