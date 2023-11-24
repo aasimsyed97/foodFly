@@ -2,6 +2,7 @@ package com.foodFly.master.Service;
 
 import com.foodFly.master.DAO.AddressDao;
 import com.foodFly.master.DAO.RestaurantDao;
+import com.foodFly.master.DTOs.AddressRequestDto;
 import com.foodFly.master.DTOs.RestaurantRequestDto;
 import com.foodFly.master.DTOs.RestaurantResponseDto;
 import com.foodFly.master.Model.Address;
@@ -44,7 +45,16 @@ public class RestaurantServiceImpl implements RestaurantService{
         restaurantDao.deleteById(restaurantId);
         return "restaurant deleted sucessfully";
     }
-     private Restaurant getRestaurant(RestaurantRequestDto restaurantRequestDto){
+
+    @Override
+    public Address updateRestaurantAddress(AddressRequestDto addressRequestDto) {
+            Address address = getAddress(addressRequestDto);
+            address = addressDao.save(address);
+
+        return address;
+    }
+
+    private Restaurant getRestaurant(RestaurantRequestDto restaurantRequestDto){
 
         Restaurant restaurant = new Restaurant();
         restaurant.setRestaurantName(restaurantRequestDto.getRestaurantName());
@@ -54,5 +64,15 @@ public class RestaurantServiceImpl implements RestaurantService{
         restaurant.setManagerName(restaurantRequestDto.getManagerName());
         restaurant.setMobileNumber(restaurantRequestDto.getMobileNumber());
         return restaurant;
+     }
+
+     private Address getAddress(AddressRequestDto addressRequestDto){
+        Address address = new Address();
+        address.setStreet(addressRequestDto.getStreet());
+        address.setCity(addressRequestDto.getCity());
+        address.setState(addressRequestDto.getState());
+        address.setBuilding(addressRequestDto.getBuilding());
+        address.setCountry(addressRequestDto.getCountry());
+        return address;
      }
 }
