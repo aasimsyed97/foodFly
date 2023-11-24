@@ -1,7 +1,9 @@
 package com.foodFly.master.Controller;
 
+import com.foodFly.master.DTOs.AddressRequestDto;
 import com.foodFly.master.DTOs.RestaurantRequestDto;
 import com.foodFly.master.DTOs.RestaurantResponseDto;
+import com.foodFly.master.Model.Address;
 import com.foodFly.master.Model.Restaurant;
 import com.foodFly.master.Service.RestaurantService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,10 +40,15 @@ public class RestaurantController {
     }
 
 
-    public ResponseEntity<String> deleteRestaurant(@RequestParam Long restaurantId){
-
+    @DeleteMapping("/deleteRestaurant")
+    public ResponseEntity<String> deleteRestaurant(@RequestParam Long restaurantId) {
         String response = restaurantService.deleteRestaurant(restaurantId);
-        return new ResponseEntity<>(response,HttpStatus.OK);
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
+    public ResponseEntity<Address> updateRestaurantAddress(@RequestBody AddressRequestDto addressRequestDto){
+
+        Address address = restaurantService.updateRestaurantAddress(addressRequestDto);
+        return new ResponseEntity<>(address,HttpStatus.OK);
+    }
 }
