@@ -62,14 +62,14 @@ public class RestaurantController {
     }
 
     @GetMapping("/get-All-Restaurant")
-    public ResponseEntity<Map<Restaurant,List<Address>>> getAllRestaurantController(){
-       Map<Restaurant,List<Address>>  response = restaurantService.getAllRestaurant();
+    public ResponseEntity<Map<Restaurant,Address>> getAllRestaurantController(){
+       Map<Restaurant,Address>  response = restaurantService.getAllRestaurant();
        return new ResponseEntity<>(response,HttpStatus.OK);
     }
 
-    @GetMapping("/getAllAdress-restaurant")
-    public ResponseEntity<List<Address>> getAllAddress_restaurantController(@RequestParam Long restaurantId){
-       List<Address>  addressList = restaurantService.getAllAddress_restaurant(restaurantId);
-       return new ResponseEntity<>(addressList,HttpStatus.OK);
+    @GetMapping("/getRestaurantAddress")
+    public ResponseEntity<Address> getRestaurantAddressController(@RequestParam Long restaurantId){
+      Address  address = restaurantService.getRestaurantAddress(restaurantId);
+       return new ResponseEntity<>(address,HttpStatus.OK);
     }
 }
