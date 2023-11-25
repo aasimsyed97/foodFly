@@ -23,7 +23,9 @@ public interface RestaurantService {
 
     String deleteRestaurantAddress(Long restaurantId, Long addressId);
 
-    Map<Restaurant, List<Address>> getAllRestaurant();
+    Map<Restaurant, Address> getAllRestaurant();
 
-    List<Address> getAllAddress_restaurant(Long restaurantId);
+
+
+    Address getRestaurantAddress(Long restaurantId);
 }
