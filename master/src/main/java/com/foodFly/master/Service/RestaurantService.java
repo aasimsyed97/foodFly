@@ -6,6 +6,9 @@ import com.foodFly.master.DTOs.RestaurantResponseDto;
 import com.foodFly.master.Model.Address;
 import com.foodFly.master.Model.Restaurant;
 
+import java.util.List;
+import java.util.Map;
+
 public interface RestaurantService {
 
     public Restaurant registerRestaurant(RestaurantRequestDto restaurantRequestDto);
@@ -16,6 +19,11 @@ public interface RestaurantService {
 
     public String deleteRestaurant(Long restaurantId);
 
-    public Address updateRestaurantAddress(AddressRequestDto addressRequestDto);
+    public Address updateRestaurantAddress(AddressRequestDto addressRequestDto,Long restaurantId);
 
+    String deleteRestaurantAddress(Long restaurantId, Long addressId);
+
+    Map<Restaurant, List<Address>> getAllRestaurant();
+
+    List<Address> getAllAddress_restaurant(Long restaurantId);
 }
