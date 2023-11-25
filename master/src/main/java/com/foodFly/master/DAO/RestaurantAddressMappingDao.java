@@ -12,8 +12,10 @@ import java.util.UUID;
 public interface RestaurantAddressMappingDao extends JpaRepository<RestaurantAddressMapping, UUID> {
 
     void deleteByRestaurantIdAndAddressId(Long restaurantId,Long addressId);
+    RestaurantAddressMapping findByRestaurantId(Long restaurantId);
+
     void deleteAllByRestaurantId(Long restaurantId);
     List<RestaurantAddressMapping> findAllByRestaurantId(Long restaurantId);
 
-    List<Long> findAllAddressIdByRestaurantId(Long restaurantId);
+    Long findAddressIdByRestaurantId(Long restaurantId);
 }
