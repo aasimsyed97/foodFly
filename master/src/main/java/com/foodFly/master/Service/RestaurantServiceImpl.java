@@ -11,10 +11,7 @@ import com.foodFly.master.Model.RestaurantAddressMapping;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Service
 public class RestaurantServiceImpl implements RestaurantService{
@@ -62,14 +59,19 @@ public class RestaurantServiceImpl implements RestaurantService{
 
     @Override
     public Address updateRestaurantAddress(AddressRequestDto addressRequestDto,Long restaurantId) {
-
-            Address address = getAddress(addressRequestDto);
+        Address address = getAddress(addressRequestDto);
+        RestaurantAddressMapping response = restaurantAddressMappingDao.findByRestaurantId(restaurantId);
+        if(Objects.isNull(response)){
+            // In case of create
             address = addressDao.save(address);
-        RestaurantAddressMapping restaurantAddressMapping = new RestaurantAddressMapping();
-        restaurantAddressMapping.setAddressId(address.getAddressId());
-        restaurantAddressMapping.setRestaurantId(restaurantId);
-        restaurantAddressMappingDao.save(restaurantAddressMapping);
+            RestaurantAddressMapping addressMapping = new RestaurantAddressMapping();
+            addressMapping.setAddressId(address.getAddressId());
+            addressMapping.setRestaurantId(restaurantId);
+            restaurantAddressMappingDao.save(addressMapping);
 
+        }
+        // In case of update
+        addressDao.save(address);
         return address;
     }
 
@@ -82,24 +84,30 @@ public class RestaurantServiceImpl implements RestaurantService{
     }
 
     @Override
-    public Map<Restaurant, List<Address>> getAllRestaurant() {
-         Map<Restaurant, List<Address>> restaurantMap  = new HashMap<>();
+    public Map<Restaurant, Address> getAllRestaurant() {
+         Map<Restaurant, Address> restaurantMap  = new HashMap<>();
          List<Restaurant> restaurantList = restaurantDao.findAll();
          restaurantList.forEach(restaurant -> {
-             List<Long> addressIds = restaurantAddressMappingDao.findAllAddressIdByRestaurantId(restaurant.getRestaurantId());
-             List<Address> addressList = addressDao.findAllById(addressIds);
-             restaurantMap.put(restaurant,addressList);
+             Long addressId = restaurantAddressMappingDao.findAddressIdByRestaurantId(restaurant.getRestaurantId());
+             Optional<Address> addressOptional = addressDao.findById(addressId);
+            Address address = new Address();
+             if (addressOptional.isPresent()){
+                  address = addressOptional.get();
+             }
+
+             restaurantMap.put(restaurant,address);
          });
 
         return restaurantMap ;
     }
 
     @Override
-    public List<Address> getAllAddress_restaurant(Long restaurantId) {
-      List<Long> addressIds =  restaurantAddressMappingDao.findAllAddressIdByRestaurantId(restaurantId);
-      List<Address> addressList =  addressDao.findAllById(addressIds);
-        return addressList;
+    public Address getRestaurantAddress(Long restaurantId) {
+           Long addressId = restaurantAddressMappingDao.findAddressIdByRestaurantId(restaurantId);
+          Optional<Address> addressOptional= addressDao.findById(addressId);
+        return addressOptional.orElse(null);
     }
+
 
     private Restaurant getRestaurant(RestaurantRequestDto restaurantRequestDto){
 
