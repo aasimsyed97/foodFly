@@ -70,5 +70,6 @@ public class RestaurantController {
     @GetMapping("/getAllAdress-restaurant")
     public ResponseEntity<List<Address>> getAllAddress_restaurantController(@RequestParam Long restaurantId){
        List<Address>  addressList = restaurantService.getAllAddress_restaurant(restaurantId);
+       return new ResponseEntity<>(addressList,HttpStatus.OK);
     }
 }
