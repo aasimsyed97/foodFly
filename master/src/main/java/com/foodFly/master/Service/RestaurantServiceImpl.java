@@ -1,13 +1,17 @@
 package com.foodFly.master.Service;
 
 import com.foodFly.master.DAO.AddressDao;
+import com.foodFly.master.DAO.RestaurantAddressMappingDao;
 import com.foodFly.master.DAO.RestaurantDao;
+import com.foodFly.master.DTOs.AddressRequestDto;
 import com.foodFly.master.DTOs.RestaurantRequestDto;
-import com.foodFly.master.DTOs.RestaurantResponseDto;
 import com.foodFly.master.Model.Address;
 import com.foodFly.master.Model.Restaurant;
+import com.foodFly.master.Model.RestaurantAddressMapping;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.*;
 
 @Service
 public class RestaurantServiceImpl implements RestaurantService{
@@ -17,6 +21,9 @@ public class RestaurantServiceImpl implements RestaurantService{
 
     @Autowired
     AddressDao addressDao;
+
+    @Autowired
+    RestaurantAddressMappingDao restaurantAddressMappingDao;
 
     @Override
     public Restaurant registerRestaurant(RestaurantRequestDto restaurantRequestDto) {
@@ -40,11 +47,69 @@ public class RestaurantServiceImpl implements RestaurantService{
 
     @Override
     public String deleteRestaurant(Long restaurantId) {
+     List<RestaurantAddressMapping>  list = restaurantAddressMappingDao.findAllByRestaurantId(restaurantId);
+      list.forEach(m-> {
+          addressDao.deleteById(m.getAddressId());
 
+      });
+      restaurantAddressMappingDao.deleteAllByRestaurantId(restaurantId);
         restaurantDao.deleteById(restaurantId);
         return "restaurant deleted sucessfully";
     }
-     private Restaurant getRestaurant(RestaurantRequestDto restaurantRequestDto){
+
+    @Override
+    public Address updateRestaurantAddress(AddressRequestDto addressRequestDto,Long restaurantId) {
+        Address address = getAddress(addressRequestDto);
+        RestaurantAddressMapping response = restaurantAddressMappingDao.findByRestaurantId(restaurantId);
+        if(Objects.isNull(response)){
+            // In case of create
+            address = addressDao.save(address);
+            RestaurantAddressMapping addressMapping = new RestaurantAddressMapping();
+            addressMapping.setAddressId(address.getAddressId());
+            addressMapping.setRestaurantId(restaurantId);
+            restaurantAddressMappingDao.save(addressMapping);
+
+        }
+        // In case of update
+        addressDao.save(address);
+        return address;
+    }
+
+    @Override
+    public String deleteRestaurantAddress(Long restaurantId, Long addressId) {
+        addressDao.deleteById(addressId);
+        restaurantAddressMappingDao.deleteByRestaurantIdAndAddressId(restaurantId,addressId);
+
+        return "restaurant delete successfully";
+    }
+
+    @Override
+    public Map<Restaurant, Address> getAllRestaurant() {
+         Map<Restaurant, Address> restaurantMap  = new HashMap<>();
+         List<Restaurant> restaurantList = restaurantDao.findAll();
+         restaurantList.forEach(restaurant -> {
+             Long addressId = restaurantAddressMappingDao.findAddressIdByRestaurantId(restaurant.getRestaurantId());
+             Optional<Address> addressOptional = addressDao.findById(addressId);
+            Address address = new Address();
+             if (addressOptional.isPresent()){
+                  address = addressOptional.get();
+             }
+
+             restaurantMap.put(restaurant,address);
+         });
+
+        return restaurantMap ;
+    }
+
+    @Override
+    public Address getRestaurantAddress(Long restaurantId) {
+           Long addressId = restaurantAddressMappingDao.findAddressIdByRestaurantId(restaurantId);
+          Optional<Address> addressOptional= addressDao.findById(addressId);
+        return addressOptional.orElse(null);
+    }
+
+
+    private Restaurant getRestaurant(RestaurantRequestDto restaurantRequestDto){
 
         Restaurant restaurant = new Restaurant();
         restaurant.setRestaurantName(restaurantRequestDto.getRestaurantName());
@@ -54,5 +119,15 @@ public class RestaurantServiceImpl implements RestaurantService{
         restaurant.setManagerName(restaurantRequestDto.getManagerName());
         restaurant.setMobileNumber(restaurantRequestDto.getMobileNumber());
         return restaurant;
+     }
+
+     private Address getAddress(AddressRequestDto addressRequestDto) {
+         Address address = new Address();
+         address.setStreet(addressRequestDto.getStreet());
+         address.setCity(addressRequestDto.getCity());
+         address.setState(addressRequestDto.getState());
+         address.setBuilding(addressRequestDto.getBuilding());
+         address.setCountry(addressRequestDto.getCountry());
+         return address;
      }
 }

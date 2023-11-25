@@ -5,6 +5,9 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 import java.util.UUID;
 
 @Data
@@ -13,6 +16,8 @@ import java.util.UUID;
 @Entity
 public class RestaurantAddressMapping {
 
+     @Id
+     @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID uuid;
 
     private Long restaurantId;
