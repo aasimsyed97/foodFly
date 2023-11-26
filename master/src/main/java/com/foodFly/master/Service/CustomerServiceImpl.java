@@ -1,15 +1,11 @@
 package com.foodFly.master.Service;
 
 
-import com.foodFly.master.DAO.AddressDao;
-import com.foodFly.master.DAO.CustomerAddressMappingDao;
-import com.foodFly.master.DAO.CustomerDao;
+import com.foodFly.master.DAO.*;
 import com.foodFly.master.DTOs.AddressRequestDto;
 import com.foodFly.master.DTOs.CustomerRequestDto;
 import com.foodFly.master.DTOs.CustomerResponseDto;
-import com.foodFly.master.Model.Address;
-import com.foodFly.master.Model.Customer;
-import com.foodFly.master.Model.CustomerAddressMapping;
+import com.foodFly.master.Model.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -26,6 +22,19 @@ public class CustomerServiceImpl implements CustomerService {
 
     @Autowired
     CustomerAddressMappingDao customerAddressMappingDao;
+
+    @Autowired
+    FoodCartDao foodCartDao;
+
+    @Autowired
+    CustomerCartMappingDao customerCartMappingDao;
+
+    @Autowired
+    ItemCartMappingDao itemCartMappingDao;
+
+    @Autowired
+    ItemDao itemDao;
+
 
     @Override
     public CustomerResponseDto getCustomer(Long id) {
@@ -48,6 +57,15 @@ public class CustomerServiceImpl implements CustomerService {
         Customer customer = getCustomer(customerRequestDto);
 
         customer = customerDao.save(customer);
+        FoodCart foodCart = new FoodCart();
+        foodCart.setTotal_Amount(0.00);
+
+        foodCart = foodCartDao.save(foodCart);
+        CustomerCartMapping customerCartMapping = new CustomerCartMapping();
+        customerCartMapping.setCartId(foodCart.getCartId());
+        customerCartMapping.setCustomerId(customer.getCustomerId());
+
+        customerCartMappingDao.save(customerCartMapping);
 
         Address address = getAddress(customerRequestDto);
 
@@ -102,6 +120,31 @@ public class CustomerServiceImpl implements CustomerService {
          addressIds.forEach(i->addressDao.deleteById(i));
 
         return "customer deleted successfully";
+    }
+
+    @Override
+    public Map<FoodCart, List<Item>> updateFoodCartItem(Long customerId, Long itemId) {
+        Long  cartId = customerCartMappingDao.findFoodCartIdByCustomerId(customerId);
+       Optional <FoodCart> foodCartOptional = foodCartDao.findById(cartId);
+       FoodCart foodCart = new FoodCart();
+       if(foodCartOptional.isEmpty()){
+          foodCart =  foodCartDao.save(foodCart);
+          CustomerCartMapping customerCartMapping = new CustomerCartMapping();
+          customerCartMapping.setFoodCartId(foodCart.getFoodCartId());
+          customerCartMapping.setCustomerId(customerId);
+          customerCartMappingDao.save(customerCartMapping);
+       } else {
+       foodCart = foodCartOptional.get();
+       }
+       ItemCartMapping itemCartMapping = new ItemCartMapping();
+       itemCartMapping.setFoodCartId(foodCart.getFoodCartId());
+       itemCartMapping.setItemId(itemId);
+       itemCartMappingDao.save(itemCartMapping);
+       List<Long> itemIdList = itemCartMappingDao.findAllItemIdByFoodCartId(foodCart.getFoodCartId());
+       List<Item> itemList = itemDao.findAllById(itemIdList);
+       Map<FoodCart,List<Item>> foodCartListMap = new HashMap<>();
+       foodCartListMap.put(foodCart,itemList);
+        return foodCartListMap;
     }
 
 
