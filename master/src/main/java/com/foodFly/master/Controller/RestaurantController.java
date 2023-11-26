@@ -3,6 +3,7 @@ package com.foodFly.master.Controller;
 import com.foodFly.master.DTOs.AddressRequestDto;
 import com.foodFly.master.DTOs.RestaurantRequestDto;
 import com.foodFly.master.Model.Address;
+import com.foodFly.master.Model.Item;
 import com.foodFly.master.Model.Restaurant;
 import com.foodFly.master.Service.RestaurantService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +11,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -71,5 +73,12 @@ public class RestaurantController {
     public ResponseEntity<Address> getRestaurantAddressController(@RequestParam Long restaurantId){
       Address  address = restaurantService.getRestaurantAddress(restaurantId);
        return new ResponseEntity<>(address,HttpStatus.OK);
+    }
+
+    @GetMapping("/getAllRestaurant-Item")
+    public ResponseEntity<Map<Restaurant, List<Item>>> getAllRestaurantItemsController(){
+
+        Map<Restaurant,List<Item>> restaurantItemHashMap = restaurantService.getAllRestaurantsItems();
+        return new ResponseEntity<>(restaurantItemHashMap,HttpStatus.OK);
     }
 }
