@@ -62,7 +62,7 @@ public class CustomerServiceImpl implements CustomerService {
 
         foodCart = foodCartDao.save(foodCart);
         CustomerCartMapping customerCartMapping = new CustomerCartMapping();
-        customerCartMapping.setCartId(foodCart.getCartId());
+        customerCartMapping.setFoodCartId(foodCart.getFoodCartId());
         customerCartMapping.setCustomerId(customer.getCustomerId());
 
         customerCartMappingDao.save(customerCartMapping);
