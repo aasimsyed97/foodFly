@@ -1,11 +1,10 @@
 package com.foodFly.master.Service;
 
-import com.foodFly.master.DAO.AddressDao;
-import com.foodFly.master.DAO.RestaurantAddressMappingDao;
-import com.foodFly.master.DAO.RestaurantDao;
+import com.foodFly.master.DAO.*;
 import com.foodFly.master.DTOs.AddressRequestDto;
 import com.foodFly.master.DTOs.RestaurantRequestDto;
 import com.foodFly.master.Model.Address;
+import com.foodFly.master.Model.Item;
 import com.foodFly.master.Model.Restaurant;
 import com.foodFly.master.Model.RestaurantAddressMapping;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +23,12 @@ public class RestaurantServiceImpl implements RestaurantService{
 
     @Autowired
     RestaurantAddressMappingDao restaurantAddressMappingDao;
+
+    @Autowired
+    RestaurantItemMappingDao restaurantItemMappingDao;
+
+    @Autowired
+    ItemDao itemDao;
 
     @Override
     public Restaurant registerRestaurant(RestaurantRequestDto restaurantRequestDto) {
@@ -106,6 +111,20 @@ public class RestaurantServiceImpl implements RestaurantService{
            Long addressId = restaurantAddressMappingDao.findAddressIdByRestaurantId(restaurantId);
           Optional<Address> addressOptional= addressDao.findById(addressId);
         return addressOptional.orElse(null);
+    }
+
+    @Override
+    public Map<Restaurant, List<Item>> getAllRestaurantsItems() {
+       Map<Restaurant,List<Item>> restaurantItemMap = new HashMap<>();
+       List<Restaurant> restaurantList = restaurantDao.findAll();
+       restaurantList.forEach(restaurant-> {
+          List<Long>  itemIdList = restaurantItemMappingDao.findAllItemIdByRestaurantId(restaurant.getRestaurantId());
+          List<Item>  itemList = itemDao.findAllById(itemIdList);
+          restaurantItemMap.put(restaurant,itemList);
+
+       });
+
+        return restaurantItemMap;
     }
 
 
