@@ -4,8 +4,10 @@ import com.foodFly.master.DTOs.AddressRequestDto;
 import com.foodFly.master.DTOs.RestaurantRequestDto;
 import com.foodFly.master.DTOs.RestaurantResponseDto;
 import com.foodFly.master.Model.Address;
+import com.foodFly.master.Model.Item;
 import com.foodFly.master.Model.Restaurant;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -28,4 +30,6 @@ public interface RestaurantService {
 
 
     Address getRestaurantAddress(Long restaurantId);
+
+    Map<Restaurant, List<Item>> getAllRestaurantsItems();
 }
