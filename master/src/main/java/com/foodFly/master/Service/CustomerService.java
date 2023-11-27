@@ -25,4 +25,6 @@ public interface CustomerService {
    String deleteCustomer(Long customerId);
 
     Map<FoodCart, List<Item>> updateFoodCartItem(Long customerId, Long itemId);
+
+    Map<FoodCart, List<Item>> deleteFoodCartItem(Long customerId, Long itemId, Long foodCartId);
 }

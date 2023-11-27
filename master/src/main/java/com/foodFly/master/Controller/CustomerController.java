@@ -76,5 +76,12 @@ public class CustomerController {
         return new ResponseEntity<>(foodCartListMap,HttpStatus.OK);
     }
 
+    @DeleteMapping("/deleteItemFromCart")
+    public ResponseEntity<Map<FoodCart,List<Item>>>deleteItemFromCartController(
+            @RequestParam Long customerId,@RequestParam Long itemId, @RequestParam Long foodCartId){
+        Map<FoodCart,List<Item>> foodCartListMap = customerService.deleteFoodCartItem(customerId,itemId,foodCartId);
+        return new ResponseEntity<>(foodCartListMap,HttpStatus.OK);
+    }
+
 
 }
