@@ -147,6 +147,19 @@ public class CustomerServiceImpl implements CustomerService {
         return foodCartListMap;
     }
 
+    @Override
+    public Map<FoodCart, List<Item>> deleteFoodCartItem(Long customerId, Long itemId, Long foodCartId) {
+        FoodCart foodCart = foodCartDao.getReferenceById(foodCartId);
+            itemCartMappingDao.deleteByItemIdAndFoodCartId(itemId,foodCartId);
+        List<Long> itemIds = itemCartMappingDao.findAllItemIdByFoodCartId(foodCartId);
+        List<Item> itemList = itemDao.findAllById(itemIds);
+        Map<FoodCart,List<Item>> foodCartListMap = new HashMap<>();
+        foodCartListMap.put(foodCart,itemList);
+        return foodCartListMap;
+    }
+
+
+
 
     private static Address getAddress(CustomerRequestDto customerRequestDto) {
         Address address = new Address();

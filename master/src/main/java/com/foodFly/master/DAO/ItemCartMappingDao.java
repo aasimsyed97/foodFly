@@ -10,4 +10,6 @@ import java.util.UUID;
 @Repository
 public interface ItemCartMappingDao extends JpaRepository<ItemCartMapping, UUID> {
     List<Long> findAllItemIdByFoodCartId(Long foodCartId);
+
+    void deleteByItemIdAndFoodCartId(Long itemId, Long foodCartId);
 }
