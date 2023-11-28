@@ -20,4 +20,5 @@ public interface RestaurantItemMappingDao extends JpaRepository<RestaurantItemMa
     List<Long> findAllItemIdByRestaurantId(Long restaurantId);
 
 
+    void deleteByItemIdAndRestaurantId(Long itemId, Long restaurantId);
 }

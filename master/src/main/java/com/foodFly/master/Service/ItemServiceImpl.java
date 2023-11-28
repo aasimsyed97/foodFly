@@ -63,6 +63,15 @@ public class ItemServiceImpl implements ItemService {
         return restaurantList;
     }
 
+    @Override
+    public String deleteItemFromRestaurant(Long itemId, Long restaurantId) {
+         itemDao.deleteById(itemId);
+         restaurantItemMappingDao.deleteByItemIdAndRestaurantId(itemId,restaurantId);
+
+
+        return "item deleted successfully with id"+ itemId;
+    }
+
     private Item getItem(ItemRequestDto itemRequestDto) {
         Item item = new Item();
         item.setItemName(itemRequestDto.getItemName());
