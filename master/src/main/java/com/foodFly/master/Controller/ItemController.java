@@ -47,6 +47,10 @@ public class ItemController {
         return new ResponseEntity<>(restaurantList,HttpStatus.OK);
     }
 
-
+  @DeleteMapping("/deleteItem")
+    public ResponseEntity<String> deleteItemFromManuController(@RequestParam Long itemId, @RequestParam Long restaurantId){
+       String response =  itemService.deleteItemFromRestaurant(itemId,restaurantId);
+       return new ResponseEntity<>(response,HttpStatus.OK);
+  }
 }
 

@@ -20,5 +20,5 @@ public class ItemCartMapping {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID uuid;
     private Long itemId;
-    private Long FoodCartId;
+    private Long foodCartId;
 }

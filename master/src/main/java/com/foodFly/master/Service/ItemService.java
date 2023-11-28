@@ -16,4 +16,6 @@ public interface ItemService {
     List<Item> getAllItemByRestaurantid( Long restaurantId);
 
     List<Restaurant> getAllRestaurantByItem(Long itemId);
+
+    String deleteItemFromRestaurant(Long itemId, Long restaurantId);
 }
